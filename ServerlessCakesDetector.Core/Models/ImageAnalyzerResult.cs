@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServerlessCakesDetector.Core.Models
 {
-	internal class ImageAnalyzerResult
+	public class ImageAnalyzerResult
 	{
 		public long ElapsedTimeInMilliseconds { get; set; }
 

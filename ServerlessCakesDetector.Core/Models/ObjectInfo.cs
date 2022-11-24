@@ -8,8 +8,8 @@ namespace ServerlessCakesDetector.Core.Models
 {
 	public class ObjectInfo
 	{
-		public string Id { get; set; }
-		public List<string> Tags { get; set; }
-		public ImageRectangle Rectangle { get; set; }
+		public string? Id { get; set; }
+		public string? Tag { get; set; }
+		public ImageRectangle? Rectangle { get; set; }
 	}
 }
