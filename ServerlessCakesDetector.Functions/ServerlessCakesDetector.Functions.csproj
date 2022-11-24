@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ServerlessCakesDetector.Cognitive\ServerlessCakesDetector.Cognitive.csproj" />
     <ProjectReference Include="..\ServerlessCakesDetector.Core\ServerlessCakesDetector.Core.csproj" />
-    <ProjectReference Include="..\ServerlessCakesDetectors.Cognitive\ServerlessCakesDetectors.Cognitive.csproj" />
+    <ProjectReference Include="..\ServerlessCakesDetector.ImageProcessing\ServerlessCakesDetector.ImageProcessing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
