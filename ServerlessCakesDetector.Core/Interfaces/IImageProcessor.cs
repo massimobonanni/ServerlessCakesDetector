@@ -9,7 +9,8 @@ namespace ServerlessCakesDetector.Core.Interfaces
 {
 	public interface IImageProcessor
 	{
-		Task CropImageAsync(Stream sourceImage, ImageRectangle rectangle, Stream outputImage);
+		Task CropImageAsync(Stream sourceImage, ImageRectangle rectangle, 
+			Stream outputImage, CancellationToken cancellationToken=default);
 
 	}
 }
