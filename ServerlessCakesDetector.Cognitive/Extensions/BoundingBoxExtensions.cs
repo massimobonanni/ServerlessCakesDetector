@@ -12,10 +12,10 @@ namespace Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Model
 		internal static ImageRectangle ToImageRectangle(this BoundingBox box)
 		{
 			return new ImageRectangle() { 
-			 Height= (int)Math.Ceiling(box.Height),
-			 Left= (int)Math.Ceiling(box.Left),
-			 Top= (int)Math.Ceiling(box.Top),
-			 Width= (int)Math.Ceiling(box.Width)
+			 Height= box.Height,
+			 Left= box.Left,
+			 Top= box.Top,
+			 Width= box.Width
 			};
 		}
 	}
