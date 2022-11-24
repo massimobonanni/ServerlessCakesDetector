@@ -46,6 +46,7 @@ namespace ServerlessCakesDetector.ImageProcessing
 
 			await img.SaveAsync(outStream, imf.Format, cancellationToken);
 
+			outStream.Position = 0;
 			return outStream;
 		}
 	}

@@ -8,6 +8,7 @@ using ServerlessCakesDetector.Core.Interfaces;
 using ServerlessCakesDetector.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace ServerlessCakesDetector.Cognitive.Services
 		private readonly IConfiguration configuration;
 		private readonly ILogger<CustomVisionImageAnalyzer> logger;
 
-		public CustomVisionImageAnalyzer(IConfiguration configuration, 
+		public CustomVisionImageAnalyzer(IConfiguration configuration,
 			ILoggerFactory loggerFactory)
 		{
 			if (configuration == null)
@@ -40,11 +41,13 @@ namespace ServerlessCakesDetector.Cognitive.Services
 			};
 		}
 
-		private ImageAnalyzerResult ElaborateImagePrediction(ImagePrediction imagePrediction,
+		private ImageAnalyzerResult ElaborateImagePrediction(ImagePrediction imagePrediction, long elapsedMilliseconds,
 			ImageAnalyzerConfiguration config)
 		{
-			var imageResult = new ImageAnalyzerResult() { 
-				Objects= new List<ObjectInfo>()
+			var imageResult = new ImageAnalyzerResult()
+			{
+				ElapsedTimeInMilliseconds=elapsedMilliseconds,
+				Objects = new List<ObjectInfo>()
 			};
 
 			foreach (var prediction in imagePrediction.Predictions)
@@ -64,17 +67,19 @@ namespace ServerlessCakesDetector.Cognitive.Services
 			return imageResult;
 		}
 
-		public async Task<ImageAnalyzerResult> AnalyzeImageAsync(Stream imageStream, CancellationToken cancellationToken = default)
+		private async Task<ImageAnalyzerResult> AnalyzeImageAsync(
+			Func<CustomVisionPredictionClient, ImageAnalyzerConfiguration, Task<ImagePrediction>> cognitiveCallLambda,
+			CancellationToken cancellationToken = default)
 		{
 			var config = ImageAnalyzerConfiguration.Load(configuration);
 
 			try
 			{
 				var visionClient = CreateVisionClient(config);
-				var imagePrediction = await visionClient.ClassifyImageAsync(
-							new Guid(config.ProjectId),	config.ModelName, 
-							imageStream, null, cancellationToken);
-				return ElaborateImagePrediction(imagePrediction, config);
+				var stopWatch = Stopwatch.StartNew();
+				var imagePrediction = await cognitiveCallLambda.Invoke(visionClient, config);
+				stopWatch.Stop();
+				return ElaborateImagePrediction(imagePrediction, stopWatch.ElapsedMilliseconds, config);
 			}
 			catch (Exception ex)
 			{
@@ -84,24 +89,24 @@ namespace ServerlessCakesDetector.Cognitive.Services
 			}
 		}
 
+		public async Task<ImageAnalyzerResult> AnalyzeImageAsync(Stream imageStream, CancellationToken cancellationToken = default)
+		{
+			return await AnalyzeImageAsync((client, config) =>
+			{
+				return client.DetectImageAsync(config.ProjectId, 
+					config.ModelName, imageStream, null, cancellationToken);
+			});
+		}
+			
+
 		public async Task<ImageAnalyzerResult> AnalyzeImageAsync(string imageUrl, CancellationToken cancellationToken = default)
 		{
-			var config = ImageAnalyzerConfiguration.Load(configuration);
-
-			try
+			return await AnalyzeImageAsync((client, config) =>
 			{
-				var visionClient = CreateVisionClient(config);
-				var imagePrediction = await visionClient.ClassifyImageUrlAsync(
-							new Guid(config.ProjectId),config.ModelName, 
+				return client.DetectImageUrlAsync(
+							config.ProjectId, config.ModelName,
 							new ImageUrl(imageUrl), null, cancellationToken);
-				return ElaborateImagePrediction(imagePrediction, config);
-			}
-			catch (Exception ex)
-			{
-				this.logger.LogError(ex, "Error during custom vision prediction service");
-				throw;
-				//return ImageAnalyzerResult.Empty;
-			}
+			});
 		}
 	}
 }

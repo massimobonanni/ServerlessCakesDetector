@@ -19,6 +19,7 @@ using YamlDotNet.Core.Tokens;
 using System.Collections.Generic;
 using ServerlessCakesDetector.Core.Models;
 using System.Threading;
+using System.Linq;
 
 namespace ServerlessCakesDetectors.Functions.Functions
 {
@@ -62,13 +63,13 @@ namespace ServerlessCakesDetectors.Functions.Functions
 			var response = await CreateResponseAsync(operationContext, imageAnalysisResult, file, default);
 
 			// Send event using Event Grid Custom Topic
-			var @event = new EventGridEvent(
-				  subject: operationContext.BlobName,
-				  eventType: "ImageAnalyzed",
-				  dataVersion: "1.0",
-				  data: response);
+			//var @event = new EventGridEvent(
+			//	  subject: operationContext.BlobName,
+			//	  eventType: "ImageAnalyzed",
+			//	  dataVersion: "1.0",
+			//	  data: response);
 
-			await eventCollector.AddAsync(@event);
+			//await eventCollector.AddAsync(@event);
 
 			return new OkObjectResult(response);
 		}
@@ -77,6 +78,10 @@ namespace ServerlessCakesDetectors.Functions.Functions
 		private async Task<AnalyzeImageFromStreamResponse> CreateResponseAsync(OperationContext operationContext,
 			ImageAnalyzerResult imageAnalysisResult, IFormFile file, CancellationToken cancellationToken)
 		{
+			var acceptedTags = this.configuration["AcceptedTags"]
+				.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+				.Select(s => s.ToLower());
+
 			//Create response DTO
 			var response = new AnalyzeImageFromStreamResponse()
 			{
@@ -91,22 +96,28 @@ namespace ServerlessCakesDetectors.Functions.Functions
 
 			await this.storageService.SerializeObjectToBlobAsync(response, resultBlobName, cancellationToken);
 
-			// Elaborate faces
-			for (int i = 0; i < imageAnalysisResult.Objects.Count || !cancellationToken.IsCancellationRequested; i++)
-			{
-				var @object = imageAnalysisResult.Objects[i];
-				var objectImageBlobName = operationContext.GenerateObjectImageFileName(i, @object);
-				using (var sourceStream = file.OpenReadStream())
+			if (imageAnalysisResult.Objects.Count > 0)
+			{           // Elaborate faces
+				for (int i = 0; i < imageAnalysisResult.Objects.Count && !cancellationToken.IsCancellationRequested; i++)
 				{
-					// Extract face from original image
-					var imageStream = await imageProcessor.CropImageAsync(sourceStream, @object.Rectangle, cancellationToken);
-					await storageService.UploadToStorageAsync(imageStream, objectImageBlobName, cancellationToken);
+					var @object = imageAnalysisResult.Objects[i];
+					if (acceptedTags.Contains(@object.Tag.ToLower()))
+					{
+						var objectImageBlobName = operationContext.GenerateObjectImageFileName(i, @object);
+						using (var sourceStream = file.OpenReadStream())
+						{
+							using (var imageStream = await imageProcessor.CropImageAsync(sourceStream, @object.Rectangle, cancellationToken))
+							{
+								await storageService.UploadToStorageAsync(imageStream, objectImageBlobName, cancellationToken);
+							}
+						}
+						response.ObjectsBlobs.Add(new ObjectBlob()
+						{
+							BlobUrl = await storageService.GetUrnAsync(objectImageBlobName, cancellationToken),
+							ObjectId = @object.Id
+						});
+					}
 				}
-				response.ObjectsBlobs.Add(new ObjectBlob()
-				{
-					BlobUrl = await storageService.GetUrnAsync(objectImageBlobName, cancellationToken),
-					ObjectId = @object.Id
-				});
 			}
 
 			return response;

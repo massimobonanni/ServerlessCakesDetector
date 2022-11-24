@@ -12,7 +12,7 @@ namespace ServerlessCakesDetector.Cognitive.Configuration
 		const string ConfigRootName = "ImageAnalyzer";
 		public string? PredictionEndpoint { get; set; }
 		public string? PredictionKey { get; set; }
-		public string? ProjectId { get; set; }
+		public Guid ProjectId { get; set; }
 		public string? ModelName { get; set; }
 		public double Threshold { get; set; }
 
@@ -21,9 +21,9 @@ namespace ServerlessCakesDetector.Cognitive.Configuration
 			var retVal = new ImageAnalyzerConfiguration();
 			retVal.PredictionEndpoint = config[$"{ConfigRootName}:PredictionEndpoint"];
 			retVal.PredictionKey = config[$"{ConfigRootName}:PredictionKey"];
-			retVal.ProjectId = config[$"{ConfigRootName}:ProjectId"];
+			retVal.ProjectId = Guid.Parse(config[$"{ConfigRootName}:ProjectId"]);
 			retVal.ModelName = config[$"{ConfigRootName}:ModelName"];
-			retVal.Threshold = double.Parse(config[$"{ConfigRootName}:Threshold"]);
+			retVal.Threshold = config.GetValue<double>($"{ConfigRootName}:Threshold");
 			return retVal;
 		}
 	}
