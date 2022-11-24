@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessCakesDetectors.Functions", "ServerlessCakesDetectors.Functions\ServerlessCakesDetectors.Functions.csproj", "{180AEB42-A2F6-4DF5-8FBD-063254C66747}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessCakesDetector.Core", "ServerlessCakesDetector.Core\ServerlessCakesDetector.Core.csproj", "{2DC67B19-A358-4917-B706-073FB4B5E33A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessCakesDetectors.Cognitive", "ServerlessCakesDetectors.Cognitive\ServerlessCakesDetectors.Cognitive.csproj", "{5011CD38-5601-43D8-81D8-6FE3B56D39DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5011CD38-5601-43D8-81D8-6FE3B56D39DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5011CD38-5601-43D8-81D8-6FE3B56D39DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5011CD38-5601-43D8-81D8-6FE3B56D39DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5011CD38-5601-43D8-81D8-6FE3B56D39DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
