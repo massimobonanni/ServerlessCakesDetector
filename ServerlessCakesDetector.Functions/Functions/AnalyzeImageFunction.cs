@@ -16,32 +16,35 @@ using ServerlessCakesDetector.Functions.Responses;
 
 namespace ServerlessCakesDetectors.Functions.Functions
 {
-    public  class AnalyzeImageFunction
-    {
+	public class AnalyzeImageFunction
+	{
 		private readonly ILogger<AnalyzeImageFunction> logger;
 		private readonly IImageAnalyzer imageAnalyzer;
 		private readonly IConfiguration configuration;
 		private readonly IImageProcessor imageProcessor;
+		private readonly IStorageService storageService;
 
 		public AnalyzeImageFunction(IImageAnalyzer imageAnalyzer, IConfiguration configuration,
-			IImageProcessor imageProcessor,ILogger<AnalyzeImageFunction> log)
+			IImageProcessor imageProcessor, IStorageService storageService,
+			ILogger<AnalyzeImageFunction> log)
 		{
 			logger = log;
 			this.imageAnalyzer = imageAnalyzer;
 			this.imageProcessor = imageProcessor;
+			this.storageService = storageService;
 			this.configuration = configuration;
 		}
 
 		[FunctionName(nameof(AnalyzeImageFunction))]
-        public  async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function,  "post", "analyze")] HttpRequest req,
-			[Blob("%DestinationContainer%", FileAccess.ReadWrite, Connection = "StorageConnectionString")] CloudBlobContainer destinationContainer,
+		public async Task<IActionResult> Run(
+			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "analyze")] HttpRequest req,
+			//[Blob("%DestinationContainer%", FileAccess.ReadWrite, Connection = "StorageConnectionString")] CloudBlobContainer destinationContainer,
 			[EventGrid(TopicEndpointUri = "TopicEndpoint", TopicKeySetting = "TopicKey")] IAsyncCollector<EventGridEvent> eventCollector)
-        {
-            logger.LogInformation("C# HTTP trigger function processed a request.");
+		{
+			logger.LogInformation("C# HTTP trigger function processed a request.");
 
-           
-            return new ObjectResult(new AnalyzeImageFromStreamResponse());
-        }
-    }
+
+			return new ObjectResult(new AnalyzeImageFromStreamResponse());
+		}
+	}
 }

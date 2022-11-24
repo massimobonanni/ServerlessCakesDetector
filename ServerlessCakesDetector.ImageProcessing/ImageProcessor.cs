@@ -28,5 +28,25 @@ namespace ServerlessCakesDetector.ImageProcessing
 
 			await img.SaveAsync(outputImage, imf.Format,cancellationToken);
 		}
+
+		public async Task<Stream> CropImageAsync(Stream sourceImage, ImageRectangle rectangle,
+			CancellationToken cancellationToken)
+		{
+			MemoryStream outStream = new MemoryStream();
+
+			(Image Image, IImageFormat Format) imf =
+				await Image.LoadWithFormatAsync(sourceImage, cancellationToken);
+
+			using Image img = imf.Image;
+
+			img.Mutate(x =>
+				  x.Crop(
+					  new Rectangle(rectangle.Left, rectangle.Top,
+									rectangle.Width, rectangle.Height)));
+
+			await img.SaveAsync(outStream, imf.Format, cancellationToken);
+
+			return outStream;
+		}
 	}
 }

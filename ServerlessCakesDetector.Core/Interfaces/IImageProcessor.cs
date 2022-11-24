@@ -12,5 +12,8 @@ namespace ServerlessCakesDetector.Core.Interfaces
 		Task CropImageAsync(Stream sourceImage, ImageRectangle rectangle, 
 			Stream outputImage, CancellationToken cancellationToken=default);
 
+		Task<Stream> CropImageAsync(Stream sourceImage, ImageRectangle rectangle, 
+			CancellationToken cancellationToken = default);
+
 	}
 }

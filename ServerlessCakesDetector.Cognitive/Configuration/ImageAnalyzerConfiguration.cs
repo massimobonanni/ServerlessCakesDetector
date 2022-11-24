@@ -23,7 +23,7 @@ namespace ServerlessCakesDetector.Cognitive.Configuration
 			retVal.PredictionKey = config[$"{ConfigRootName}:PredictionKey"];
 			retVal.ProjectId = config[$"{ConfigRootName}:ProjectId"];
 			retVal.ModelName = config[$"{ConfigRootName}:ModelName"];
-			retVal.Threshold = config.GetValue<double>($"{ConfigRootName}:Threshold");
+			retVal.Threshold = double.Parse(config[$"{ConfigRootName}:Threshold"]);
 			return retVal;
 		}
 	}
