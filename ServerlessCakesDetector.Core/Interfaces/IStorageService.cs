@@ -10,5 +10,7 @@ namespace ServerlessCakesDetector.Core.Interfaces
 	{
 		Task UploadToStorageAsync(Stream sourceStream, string destinationName,CancellationToken cancellationToken);
 		Task SerializeObjectToBlobAsync(object @obj, string destinationName,CancellationToken cancellationToken);
+
+		Task<string> GetUrnAsync(string blobName, CancellationToken cancellationToken);
 	}
 }

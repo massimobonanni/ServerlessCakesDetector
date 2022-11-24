@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Specialized;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -48,20 +49,33 @@ namespace ServerlessCakesDetector.Functions.Services
 
 		public async Task SerializeObjectToBlobAsync(object obj, string destinationName, CancellationToken cancellationToken)
 		{
-			var config = Configuration.Load(this.configuration);
-			var blobServiceClient = new BlobServiceClient(config.StorageConnectionString);
-			var containerClient = blobServiceClient.GetBlobContainerClient(config.DestinationContainer);
+			var containerClient = CreateBlobContainerClient();
 			await containerClient.UploadBlobAsync(destinationName,
-				BinaryData.FromObjectAsJson(obj, 
+				BinaryData.FromObjectAsJson(obj,
 					new JsonSerializerOptions() { WriteIndented = true }));
 		}
 
 		public async Task UploadToStorageAsync(Stream sourceStream, string destinationName, CancellationToken cancellationToken)
 		{
+			var containerClient = CreateBlobContainerClient();
+			await containerClient.UploadBlobAsync(destinationName, sourceStream);
+		}
+
+		public Task<string> GetUrnAsync(string blobName, CancellationToken cancellationToken)
+		{
+			var containerClient = CreateBlobContainerClient();
+			var blobClient = containerClient.GetBlobClient(blobName);
+			var sasUrl = blobClient.GenerateSasUri(Azure.Storage.Sas.BlobSasPermissions.Read,
+				DateTimeOffset.Now.AddDays(1));
+
+			return Task.FromResult(sasUrl.ToString());
+		}
+		private BlobContainerClient CreateBlobContainerClient()
+		{
 			var config = Configuration.Load(this.configuration);
 			var blobServiceClient = new BlobServiceClient(config.StorageConnectionString);
 			var containerClient = blobServiceClient.GetBlobContainerClient(config.DestinationContainer);
-			await containerClient.UploadBlobAsync(destinationName, sourceStream);
+			return containerClient;
 		}
 	}
 }

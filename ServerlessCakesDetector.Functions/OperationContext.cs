@@ -35,7 +35,7 @@ namespace ServerlessCakesDetector.Functions
 		}
 
 		public string GenerateResultFileName() => $"{BlobFolder}\\result.json";
-		public string GenerateFaceFileName(int fileIndex, ObjectInfo @object) => $"{BlobFolder}\\face-{@object.Id}{Extension}";
+		public string GenerateObjectImageFileName(int fileIndex, ObjectInfo @object) => $"{BlobFolder}\\face-{@object.Id}{Extension}";
 
 	}
 }
