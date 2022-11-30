@@ -62,15 +62,17 @@ namespace ServerlessCakesDetectors.Functions.Functions
 			//Create response DTO
 			var response = await CreateResponseAsync(operationContext, imageAnalysisResult, file, default);
 
-			// Send event using Event Grid Custom Topic
-			//var @event = new EventGridEvent(
-			//	  subject: operationContext.BlobName,
-			//	  eventType: "ImageAnalyzed",
-			//	  dataVersion: "1.0",
-			//	  data: response);
+			if (this.configuration.IsEventGridConfigured())
+			{
+				// Send event using Event Grid Custom Topic
+				var @event = new EventGridEvent(
+					  subject: operationContext.BlobName,
+					  eventType: "ImageAnalyzed",
+					  dataVersion: "1.0",
+					  data: response);
 
-			//await eventCollector.AddAsync(@event);
-
+				await eventCollector.AddAsync(@event);
+			}
 			return new OkObjectResult(response);
 		}
 
