@@ -23,19 +23,6 @@ This is the `setting.json` file for the configuration:
   "Values": {
     ....
     "StorageConnectionString": "",
-    "DestinationContainer": "faces",
-    "FaceAnalyzer:ServiceEndpoint": "",
-    "FaceAnalyzer:ServiceKey": "",
-    "FaceAnalyzer:AgeThreshold": "18",
-    "TopicEndpoint": "",
-    "TopicKey": ""
-  }
-}
-{
-  "IsEncrypted": false,
-  "Values": {
-    ....
-    "StorageConnectionString": "",
     "DestinationContainer": "cakes",
     "TopicEndpoint": "",
     "TopicKey": "",
