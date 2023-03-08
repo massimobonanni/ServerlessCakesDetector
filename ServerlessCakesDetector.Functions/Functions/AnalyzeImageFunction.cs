@@ -94,12 +94,9 @@ namespace ServerlessCakesDetectors.Functions.Functions
 				ObjectsBlobs = new List<ObjectBlob>()
 			};
 
-			var resultBlobName = operationContext.GenerateResultFileName();
-
-			await this.storageService.SerializeObjectToBlobAsync(response, resultBlobName, cancellationToken);
-
 			if (imageAnalysisResult.Objects.Count > 0)
-			{           // Elaborate faces
+			{           
+				// Elaborate faces
 				for (int i = 0; i < imageAnalysisResult.Objects.Count && !cancellationToken.IsCancellationRequested; i++)
 				{
 					var @object = imageAnalysisResult.Objects[i];
@@ -122,7 +119,11 @@ namespace ServerlessCakesDetectors.Functions.Functions
 				}
 			}
 
-			return response;
+            var resultBlobName = operationContext.GenerateResultFileName();
+
+            await this.storageService.SerializeObjectToBlobAsync(response, resultBlobName, cancellationToken);
+
+            return response;
 		}
 	}
 }
