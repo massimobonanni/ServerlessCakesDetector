@@ -136,8 +136,15 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   }
 }
 
-resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccount.name}/default/cakes'
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' = {
+  name: 'default'
+  parent: storageAccount
+  properties: {}
+}
+
+resource cakeContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: 'cakes'
+  parent: blobService
   properties: {
     publicAccess: 'None'
     metadata: {}
