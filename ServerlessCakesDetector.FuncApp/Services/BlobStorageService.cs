@@ -1,20 +1,10 @@
 ﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Specialized;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using ServerlessCakesDetector.Cognitive.Services;
 using ServerlessCakesDetector.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace ServerlessCakesDetector.Functions.Services
+namespace ServerlessCakesDetector.FuncApp.Services
 {
 	public class BlobStorageService : IStorageService
 	{
@@ -44,7 +34,7 @@ namespace ServerlessCakesDetector.Functions.Services
 				throw new ArgumentNullException(nameof(loggerFactory));
 
 			this.configuration = configuration;
-			this.logger = loggerFactory.CreateLogger<BlobStorageService>();
+            logger = loggerFactory.CreateLogger<BlobStorageService>();
 		}
 
 		public async Task SerializeObjectToBlobAsync(object obj, string destinationName, CancellationToken cancellationToken)
@@ -72,7 +62,7 @@ namespace ServerlessCakesDetector.Functions.Services
 		}
 		private BlobContainerClient CreateBlobContainerClient()
 		{
-			var config = Configuration.Load(this.configuration);
+			var config = Configuration.Load(configuration);
 			var blobServiceClient = new BlobServiceClient(config.StorageConnectionString);
 			var containerClient = blobServiceClient.GetBlobContainerClient(config.DestinationContainer);
 			return containerClient;

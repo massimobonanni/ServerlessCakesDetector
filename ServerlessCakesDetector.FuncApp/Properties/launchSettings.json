@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "ServerlessCakesDetectors.Functions": {
+    "ServerlessCakesDetector.FuncApp": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7134",
+      "commandLineArgs": "--port 7242",
       "launchBrowser": false
     }
   }

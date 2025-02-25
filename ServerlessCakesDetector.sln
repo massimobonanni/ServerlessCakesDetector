@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessCakesDetector.Functions", "ServerlessCakesDetector.Functions\ServerlessCakesDetector.Functions.csproj", "{180AEB42-A2F6-4DF5-8FBD-063254C66747}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessCakesDetector.Core", "ServerlessCakesDetector.Core\ServerlessCakesDetector.Core.csproj", "{2DC67B19-A358-4917-B706-073FB4B5E33A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessCakesDetector.Cognitive", "ServerlessCakesDetector.Cognitive\ServerlessCakesDetector.Cognitive.csproj", "{5011CD38-5601-43D8-81D8-6FE3B56D39DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerlessCakesDetector.ImageProcessing", "ServerlessCakesDetector.ImageProcessing\ServerlessCakesDetector.ImageProcessing.csproj", "{2893784A-ECF3-42C7-B233-DEC70F43CBD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessCakesDetector.FuncApp", "ServerlessCakesDetector.FuncApp\ServerlessCakesDetector.FuncApp.csproj", "{E4D5C4E1-B71C-4253-8F95-F837A4D595FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{180AEB42-A2F6-4DF5-8FBD-063254C66747}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC67B19-A358-4917-B706-073FB4B5E33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{2893784A-ECF3-42C7-B233-DEC70F43CBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2893784A-ECF3-42C7-B233-DEC70F43CBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2893784A-ECF3-42C7-B233-DEC70F43CBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4D5C4E1-B71C-4253-8F95-F837A4D595FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4D5C4E1-B71C-4253-8F95-F837A4D595FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4D5C4E1-B71C-4253-8F95-F837A4D595FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4D5C4E1-B71C-4253-8F95-F837A4D595FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

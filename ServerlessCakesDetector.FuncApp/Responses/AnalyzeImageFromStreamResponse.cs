@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServerlessCakesDetector.Functions.Responses
+namespace ServerlessCakesDetector.FuncApp.Responses
 {
 	public class AnalyzeImageFromStreamResponse
 	{
