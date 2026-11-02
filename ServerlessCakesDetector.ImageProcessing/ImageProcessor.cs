@@ -16,10 +16,8 @@ namespace ServerlessCakesDetector.ImageProcessing
 		public async Task CropImageAsync(Stream sourceImage, ImageRectangle rectangle,
 			Stream outputImage, CancellationToken cancellationToken)
 		{
-			(Image Image, IImageFormat Format) imf =
-				await Image.LoadWithFormatAsync(sourceImage, cancellationToken);
-
-			using Image img = imf.Image;
+			using Image img = await Image.LoadAsync(sourceImage, cancellationToken);
+			IImageFormat format = img.Metadata.DecodedImageFormat!;
 			var cropRectangle = new Rectangle()
 			{
 				X = (int)Math.Ceiling(img.Width * rectangle.Left),
@@ -30,7 +28,7 @@ namespace ServerlessCakesDetector.ImageProcessing
 
 			img.Mutate(x => x.Crop(cropRectangle));
 
-			await img.SaveAsync(outputImage, imf.Format, cancellationToken);
+			await img.SaveAsync(outputImage, format, cancellationToken);
 		}
 
 		public async Task<Stream> CropImageAsync(Stream sourceImage, ImageRectangle rectangle,
@@ -38,10 +36,8 @@ namespace ServerlessCakesDetector.ImageProcessing
 		{
 			MemoryStream outStream = new MemoryStream();
 
-			(Image Image, IImageFormat Format) imf =
-				await Image.LoadWithFormatAsync(sourceImage, cancellationToken);
-
-			using Image img = imf.Image;
+			using Image img = await Image.LoadAsync(sourceImage, cancellationToken);
+			IImageFormat format = img.Metadata.DecodedImageFormat!;
 
 			var cropRectangle = new Rectangle()
 			{
@@ -53,7 +49,7 @@ namespace ServerlessCakesDetector.ImageProcessing
 
 			img.Mutate(x => x.Crop(cropRectangle));
 
-			await img.SaveAsync(outStream, imf.Format, cancellationToken);
+			await img.SaveAsync(outStream, format, cancellationToken);
 
 			outStream.Position = 0;
 			return outStream;
